@@ -8,18 +8,29 @@ wss.on('connection', (ws) => {
   console.log('A new client connected!');
 
   // Send a welcome message to the client
-  ws.send('Welcome to the WebSocket server!');
+  const welcomeMessage = {
+    type: 'welcome',
+    content: 'Welcome to the WebSocket server!'
+  };
+  ws.send(JSON.stringify(welcomeMessage));
 
   // Handle incoming messages from the client
   ws.on('message', (message) => {
     console.log(`Received message: ${message}`);
 
-    // Broadcast the message to all connected clients
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send('Karthikeya');
-      }
-    });
+    // Parse the received JSON data
+    try {
+      const jsonData = JSON.parse(message);
+
+      // Broadcast the JSON data to all connected clients
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(jsonData));
+        }
+      });
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+    }
   });
 
   // Handle client disconnection
