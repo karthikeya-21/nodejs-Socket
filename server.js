@@ -16,7 +16,6 @@ wss.on('connection', (ws) => {
 
   // Handle incoming messages from the client
   ws.on('message', (message) => {
-    console.log(`Received message: ${message}`);
 
     // Parse the received JSON data
     try {
@@ -24,7 +23,7 @@ wss.on('connection', (ws) => {
 
       // Broadcast the JSON data to all connected clients
       wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
+        if (client!=ws && client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify(jsonData));
         }
       });
