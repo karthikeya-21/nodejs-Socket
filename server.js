@@ -76,8 +76,8 @@ try {
     if(data.type=='userList'){
       console.log("Sending Users List")
       const users = await getUsersWithoutMe(data.name);
-      const data={type:'userList',data:users};
-      ws.send(JSON.stringify(data));
+      const list={type:'userList',data:users};
+      ws.send(JSON.stringify(list));
     }
 
 
