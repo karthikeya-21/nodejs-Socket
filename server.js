@@ -24,7 +24,6 @@ async function getUsersWithoutMe(excludedUserId) {
     // Fetch all users except the one with the specified ID
     const users = await userCollection.find(
       { name: { $ne: new ObjectId(excludedUserId) } },
-      { projection: { _id: 1, name: 1 } }
     ).toArray();
 
     return users;
